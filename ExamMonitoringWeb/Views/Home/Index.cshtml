@@ -1,0 +1,41 @@
+﻿@model List<ExamMonitoringWeb.Models.CheatingData>
+<h2>Exam Monitoring - Cheating Detections</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>Cheating Type</th>
+            <th>Confidence</th>
+            <th>Timestamp</th>
+            <th>Details</th>
+            <th>Received At</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in Model)
+        {
+            <tr>
+                <td>@record.StudentId</td>
+                <td>@record.CheatingType</td>
+                <td>@record.Confidence</td>
+                <td>@record.Timestamp</td>
+                <td>
+                    @if (record.CheatingType == "unauthorized_person")
+                    {
+                        <span>Detected ID: @(record.DetectedId ?? "N/A")</span>
+                    }
+                    else if (record.CheatingType == "head_movement")
+                    {
+                        <span>Direction: @(record.Direction ?? "N/A")</span>
+                    }
+                    else if (record.CheatingType == "object_detected")
+                    {
+                        <span>Objects: @(record.Objects != null ? string.Join(", ", record.Objects) : "N/A")</span>
+                    }
+                </td>
+                <td>@record.ReceivedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
