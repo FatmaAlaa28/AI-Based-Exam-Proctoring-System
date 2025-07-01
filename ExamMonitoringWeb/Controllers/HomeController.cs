@@ -17,14 +17,6 @@ namespace ExamMonitoringWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Adjust the URL to match your app’s base URL
-            //var response = await _httpClient.GetAsync("http://localhost:5000/api/detection/records");
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var json = await response.Content.ReadAsStringAsync();
-            //    var records = JsonSerializer.Deserialize<List<CheatingData>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            //    return View(records);
-            //}
             return View();
         }
     }

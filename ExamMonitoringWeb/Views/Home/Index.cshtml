@@ -1,41 +1,843 @@
-﻿@model List<ExamMonitoringWeb.Models.CheatingData>
-<h2>Exam Monitoring - Cheating Detections</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Student ID</th>
-            <th>Cheating Type</th>
-            <th>Confidence</th>
-            <th>Timestamp</th>
-            <th>Details</th>
-            <th>Received At</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var record in Model)
-        {
-            <tr>
-                <td>@record.StudentId</td>
-                <td>@record.CheatingType</td>
-                <td>@record.Confidence</td>
-                <td>@record.Timestamp</td>
-                <td>
-                    @if (record.CheatingType == "unauthorized_person")
-                    {
-                        <span>Detected ID: @(record.DetectedId ?? "N/A")</span>
-                    }
-                    else if (record.CheatingType == "head_movement")
-                    {
-                        <span>Direction: @(record.Direction ?? "N/A")</span>
-                    }
-                    else if (record.CheatingType == "object_detected")
-                    {
-                        <span>Objects: @(record.Objects != null ? string.Join(", ", record.Objects) : "N/A")</span>
-                    }
-                </td>
-                <td>@record.ReceivedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
-            </tr>
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-    </tbody>
-</table>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('/images/logo.png') no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 0 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Buttons */
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background-color: white;
+            color: #2c3e50;
+        }
+
+        /* Sections */
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title p {
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Stats Cards */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3498db;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .feature-card p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+
+        /* Model Tabs */
+        .model-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .model-tab {
+            padding: 0.6rem 1.2rem;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            color: #7f8c8d;
+        }
+
+        .model-tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .model-content {
+            display: none;
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .model-content.active {
+            display: block;
+        }
+
+        .model-content h3 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .model-content p {
+            margin-bottom: 1rem;
+            color: #7f8c8d;
+        }
+
+        .model-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Steps */
+        .steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            flex-grow: 1;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .step-content h3 {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: 8px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #3498db;
+        }
+
+        .footer-column p {
+            margin-bottom: 1rem;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: #3498db;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #ecf0f1;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #3498db;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+        /* How It Works Enhancements */
+        .violation-types {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .violation-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .gaze-violation {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+            border: 1px solid #3498db;
+        }
+
+        .voice-violation {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+            border: 1px solid #2ecc71;
+        }
+
+        .face-violation {
+            background-color: rgba(155, 89, 182, 0.1);
+            color: #9b59b6;
+            border: 1px solid #9b59b6;
+        }
+
+        .monitoring-list {
+            margin-top: 10px;
+            list-style: none;
+        }
+
+            .monitoring-list li {
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: #7f8c8d;
+            }
+
+        .violation-example {
+            background: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 4px solid #e74c3c;
+        }
+
+        .violation-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .violation-severity {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+            .violation-severity.high {
+                background-color: #e74c3c;
+                color: white;
+            }
+
+        .violation-details p {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .violation-timestamp {
+            font-size: 0.8rem;
+            color: #95a5a6;
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .report-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .report-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+            .report-card i {
+                font-size: 1.5rem;
+                color: #3498db;
+                margin-bottom: 10px;
+            }
+
+            .report-card h4 {
+                font-size: 1rem;
+                margin-bottom: 5px;
+                color: #2c3e50;
+            }
+
+            .report-card p {
+                font-size: 0.8rem;
+                color: #7f8c8d;
+            }
+
+        /* Responsive */
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 @* style="margin-bottom: 80px;" *@>Advanced AI-Powered Exam Proctoring</h1>
+                <p @* style="margin-top: 80px;" *@>Our intelligent system combines multiple detection models to ensure exam integrity with 99.7% accuracy.</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary">Start New Session</a>
+                    <a href="#" class="btn btn-outline">View Documentation</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Cards -->
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-value">24</div>
+                <div class="stat-label">Active Sessions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">142</div>
+                <div class="stat-label">Students Monitored</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Potential Violations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">99.7%</div>
+                <div class="stat-label">Accuracy Rate</div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="section-title">
+                <h2>Proctoring Features</h2>
+                <p>Comprehensive monitoring capabilities to ensure exam security</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Gaze Detection</h3>
+                    <p>Tracks eye movements to detect suspicious activity with 97.3% accuracy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3>Voice Detection</h3>
+                    <p>Identifies unauthorized speech patterns in 12 languages.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Object Recognition</h3>
+                    <p>Detects prohibited items with 98.5% accuracy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3>Face Recognition</h3>
+                    <p>Verifies student identity and detects impersonation attempts with 99.1% accuracy.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>Head Detection</h3>
+                    <p>Monitors head position and movement to detect unusual behavior patterns with 96.4% accuracy.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detection Models Section -->
+        <!-- Detection Models Section -->
+        <section class="detection-models" id="models">
+            <div class="section-title">
+                <h2>Detection Models</h2>
+                <p>Advanced AI models working together to prevent cheating</p>
+            </div>
+            <div class="models-container">
+                <div class="model-tabs">
+                    <div class="model-tab active" data-tab="gaze">Gaze Tracking</div>
+                    <div class="model-tab" data-tab="voice">Voice Analysis</div>
+                    <div class="model-tab" data-tab="behavior">Behavior Analysis</div>
+                    <div class="model-tab" data-tab="face">Face Recognition</div>
+                    <div class="model-tab" data-tab="head">Head Detection</div>
+                </div>
+
+                <!-- Gaze Tracking Content -->
+                <div class="model-content active" id="gaze-content">
+                    <h3>Advanced Gaze Tracking</h3>
+                    <p>Our computer vision model tracks eye movements to identify when students look away from the screen for suspicious periods or attempt to look at secondary devices.</p>
+                    <div class="model-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">97.3%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0.2s</div>
+                            <div class="stat-label">Detection Speed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">5°</div>
+                            <div class="stat-label">Angle Precision</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Voice Analysis Content -->
+                <div class="model-content" id="voice-content">
+                    <h3>Real-Time Voice Analysis</h3>
+                    <p>Our audio processing monitors for unauthorized speech patterns, background conversations, and suspicious audio cues during examinations.</p>
+                    <div class="model-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">95.7%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Languages</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0.5s</div>
+                            <div class="stat-label">Response Time</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Behavior Analysis Content -->
+                <div class="model-content" id="behavior-content">
+                    <h3>Behavioral Analysis</h3>
+                    <p>Establishes baseline behavior and flags significant deviations that may indicate cheating, including unusual typing patterns and suspicious movements.</p>
+                    <div class="model-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">94.2%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">23</div>
+                            <div class="stat-label">Signals Monitored</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">98%</div>
+                            <div class="stat-label">False Positive Rate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Face Recognition Content -->
+                <div class="model-content" id="face-content">
+                    <h3>Advanced Face Recognition</h3>
+                    <p>Verifies student identity throughout the exam session and detects impersonation attempts using live facial recognition technology.</p>
+                    <div class="model-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">99.1%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0.3s</div>
+                            <div class="stat-label">Verification Time</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">100+</div>
+                            <div class="stat-label">Facial Points</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Head Detection Content -->
+                <div class="model-content" id="head-content">
+                    <h3>Precision Head Detection</h3>
+                    <p>Monitors head position, orientation, and movement patterns to detect unusual behavior that may indicate cheating attempts.</p>
+                    <div class="model-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">96.4%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2°</div>
+                            <div class="stat-label">Angle Precision</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">15</div>
+                            <div class="stat-label">Movement Patterns</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <!-- How It Works Section -->
+        <section class="how-it-works" id="how-it-works">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Comprehensive exam monitoring with real-time violation detection</p>
+            </div>
+            <div class="steps">
+                <!-- Step 1 -->
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Setup Exam Session</h3>
+                        <p>Configure exam parameters including duration, allowed resources, and sensitivity levels for different violation types.</p>
+                        <div class="violation-types">
+                            <div class="violation-badge gaze-violation">
+                                <i class="fas fa-eye"></i> Gaze Deviation
+                            </div>
+                            <div class="violation-badge voice-violation">
+                                <i class="fas fa-microphone"></i> Unauthorized Speech
+                            </div>
+                            <div class="violation-badge face-violation">
+                                <i class="fas fa-user-shield"></i> Identity Mismatch
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Student Authentication & Monitoring</h3>
+                        <p>Students verify identity through multi-factor authentication while AI begins tracking:</p>
+                        <ul class="monitoring-list">
+                            <li><i class="fas fa-check-circle"></i> Continuous face recognition</li>
+                            <li><i class="fas fa-check-circle"></i> Head position tracking</li>
+                            <li><i class="fas fa-check-circle"></i> Eye gaze analysis</li>
+                            <li><i class="fas fa-check-circle"></i> Audio environment monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Real-Time Violation Detection</h3>
+                        <p>AI flags potential violations with severity levels and supporting evidence:</p>
+                        <div class="violation-example">
+                            <div class="violation-header">
+                                <span class="student-name">John Doe</span>
+                                <span class="violation-severity high">High Severity</span>
+                            </div>
+                            <div class="violation-details">
+                                <p><i class="fas fa-exclamation-triangle"></i> Multiple face mismatches detected (87% confidence)</p>
+                                <p><i class="fas fa-eye-slash"></i> Prolonged gaze deviation (12.7 seconds)</p>
+                                <div class="violation-timestamp">Detected at 1:23:45 PM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Review & Reporting</h3>
+                        <p>Access comprehensive violation reports for each student including:</p>
+                        <div class="report-features">
+                            <div class="report-card">
+                                <i class="fas fa-video"></i>
+                                <h4>Video Evidence</h4>
+                                <p>Timestamped clips of violations</p>
+                            </div>
+                            <div class="report-card">
+                                <i class="fas fa-chart-pie"></i>
+                                <h4>Behavior Analysis</h4>
+                                <p>Patterns and frequency charts</p>
+                            </div>
+                            <div class="report-card">
+                                <i class="fas fa-file-export"></i>
+                                <h4>Export Options</h4>
+                                <p>PDF, CSV, and video exports</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer" id="contact">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>AI Proctor</h3>
+                    <p>Advanced exam proctoring system ensuring academic integrity through AI detection models.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#models">Detection Models</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> support@aiproctor.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; @DateTime.Now.Year AI Proctor. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Tab functionality for detection models
+        document.querySelectorAll('.model-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.model-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.model-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-content`).classList.add('active');
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\ExamMonitoringWeb\\ExamMonitoringWeb\\ExamMonitoringWeb.csproj": {}
+    "D:\\new\\ExamMonitoringSystem\\ExamMonitoringWeb\\ExamMonitoringWeb.csproj": {}
   },
   "projects": {
-    "D:\\ExamMonitoringWeb\\ExamMonitoringWeb\\ExamMonitoringWeb.csproj": {
+    "D:\\new\\ExamMonitoringSystem\\ExamMonitoringWeb\\ExamMonitoringWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\ExamMonitoringWeb\\ExamMonitoringWeb\\ExamMonitoringWeb.csproj",
+        "projectUniqueName": "D:\\new\\ExamMonitoringSystem\\ExamMonitoringWeb\\ExamMonitoringWeb.csproj",
         "projectName": "ExamMonitoringWeb",
-        "projectPath": "D:\\ExamMonitoringWeb\\ExamMonitoringWeb\\ExamMonitoringWeb.csproj",
-        "packagesPath": "C:\\Users\\Microsoft\\.nuget\\packages\\",
-        "outputPath": "D:\\ExamMonitoringWeb\\ExamMonitoringWeb\\obj\\",
+        "projectPath": "D:\\new\\ExamMonitoringSystem\\ExamMonitoringWeb\\ExamMonitoringWeb.csproj",
+        "packagesPath": "C:\\Users\\hi lap\\.nuget\\packages\\",
+        "outputPath": "D:\\new\\ExamMonitoringSystem\\ExamMonitoringWeb\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Microsoft\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\hi lap\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,15 +34,16 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "default"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "EPPlus": {
+              "target": "Package",
+              "version": "[6.2.10, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.10, )"
@@ -71,6 +67,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.10, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[8.0.7, )"
             }
           },
           "imports": [

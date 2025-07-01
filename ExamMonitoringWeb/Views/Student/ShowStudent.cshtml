@@ -1,0 +1,67 @@
+﻿@model ExamMonitoringWeb.DTO.StudentAnalysis
+<div id="student-analytics" class="container page-content">
+    <div class="card">
+        <h2 class="card-title">Student Analytics</h2>
+        <a class="btn back-to-students" style="margin-bottom: 1rem;" asp-controller="Student" asp-action="Index">
+            Back to Students</a>
+        <div class="student-details">
+            <div class="detail-item">
+                <strong>Student ID:</strong> <span>@Model.Id </span>
+            </div>
+            <div class="detail-item">
+                <strong>Name:</strong> <span>@Model.Name</span>
+            </div>
+            <div class="detail-item">
+                <strong>Email:</strong> <span>@Model.Email</span>
+            </div>
+            <div class="detail-item">
+                <strong>Department:</strong> <span>@Model.Department</span>
+            </div>
+        </div>
+
+        <h3 class="card-title">Exam History</h3>
+        <table class="exam-history-table">
+            <thead>
+                <tr>
+                    <th>Exam Name</th>
+                    <th>Date</th>
+                    <th>Duration</th>
+                    <th>Alerts</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var exam in Model.exams)
+                {
+                    <tr>
+                        <td>@exam.ExamName</td>
+                        <td>@exam.Date</td>
+                        <td>@exam.Duration</td>
+                        <td>@exam.ViolationCount</td>
+                        @if (exam.Status == "Completed")
+                        {
+                            <td><span class="status status-active">@exam.Status</span></td>
+                        }
+                        else
+                        {
+                            <td><span class=" status status-warning">@exam.Status</span></td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h3 class="card-title">Analytics Overview</h3>
+        <div class="analytics-stats">
+            <div class="stat-card">
+                <div class="stat-value">@Model.NumofExams</div>
+                <div class="stat-label">Total Exams Taken</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">@Model.Alerts</div>
+                <div class="stat-label">Total Alerts</div>
+            </div>
+            
+        </div>
+    </div>
+</div>

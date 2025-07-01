@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ExamMonitoringWeb.DTO.Alert>;
+<link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+<div id="alerts" class="container page-content" >
+            <div class="card">
+                <h2 class="card-title">Recent Alerts</h2>
+                    @if (Model.Any())
+                    {
+                        @foreach (var alert in Model)
+                        {
+                            <div class="alert-item">
+					            <div class="alert-icon danger">
+                                 <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="alert-content">
+                                    <h3>@alert.Name</h3>
+                                    <p>Student: @alert.StudentName (ID: @alert.StudentId)</p>
+                                    <p>Exam: @alert.ExamName</p>
+                                    <div class="alert-time">@alert.Time</div>
+                                </div>
+                               
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert-item">
+                        </div>
+                    }
+
+            </div>
+</div>

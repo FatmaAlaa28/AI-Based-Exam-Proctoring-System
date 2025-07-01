@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ExamMonitoringWeb.DTO.Student>
+<div id="students" class="container page-content" >
+    <div class="card">
+        <h2 class="card-title">Student Management</h2>
+        <table class="students-table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Current Exam</th>
+                    <th>Lab</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+               @foreach(var student in Model)
+                {
+                    <tr>
+                        <td>@student.Id</td>
+                        <td>@student.Name</td>
+                        <td>@student.CurrentExam</td>
+                        <td>@student.LabName</td>
+                        <td><span class=" status status-warning">In Progress</span></td>
+                      
+                        <td>  
+                            <a class="btn view-student"
+                                style="text-decoration: none; color: white;" asp-controller="Student"
+                                   asp-action="ShowStudent" asp-route-id="@student.Id">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

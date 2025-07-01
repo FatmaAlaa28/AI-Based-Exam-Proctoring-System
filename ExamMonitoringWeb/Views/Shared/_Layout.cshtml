@@ -3,47 +3,163 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Proctor - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>@ViewData["Title"] - ExamMonitoringWeb</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ExamMonitoringWeb.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ExamMonitoringWeb</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3 style="margin-bottom: 20px">EXAMGUARDIAN AI</h3>
+           
+        </div>
+
+        <div class="sidebar-menu">
+
+            @{
+                var isAuthenticated = Context.Session.GetString("UserName") != null;
+            }
+
+            <ul>
+                <li>
+                    <a asp-controller="Home" asp-action="Index">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                </li>
+                <li>
+                    @if (isAuthenticated)
+                    {
+                        <a asp-controller="Dashboard" asp-action="Index">
+                            <i class="fas fa-dashboard"></i> Dashboard
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    }
+                </li>
+
+                <li>
+                    @if (isAuthenticated)
+                    {
+                        <a asp-controller="Exam" asp-action="Create">
+                            <i class="fas fa-plus-circle"></i> Create Exam
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login">
+                            <i class="fas fa-plus-circle"></i> Create Exam
+                        </a>
+                    }
+                </li>
+                <li>
+                    @if (isAuthenticated)
+                    {
+                        <a asp-controller="Student" asp-action="Create">
+                            <i class="fas fa-plus-circle"></i> Add Students
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login">
+                            <i class="fas fa-plus-circle"></i> Add Students
+                        </a>
+                    }
+                </li>
+                <li>
+                    @if (isAuthenticated)
+                    {
+                        <a asp-controller="Student" asp-action="Index">
+                            <i class="fas fa-users"></i> Students
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login">
+                            <i class="fas fa-users"></i> Students
+                        </a>
+                    }
+                </li>
+
+                <li>
+                    @if (isAuthenticated)
+                    {
+                        <a asp-controller="Alert" asp-action="Index">
+                            <i class="fas fa-flag"></i> Alerts
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login">
+                            <i class="fas fa-flag"></i> Alerts
+                        </a>
+                    }
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                @if (isAuthenticated)
+                {
+                    <img src="https://ui-avatars.com/api/?name=Professor&background=3498db&color=fff"
+                    alt="User">
+                    <div>
+                        <h4>@Context.Session.GetString("UserName")</h4>
+                        <p>@Context.Session.GetString("Role")</p>
+                    </div>
+                }
             </div>
-        </nav>
-    </header>
-    <div class="container">
+        </div>
+    </div>
+
+
+
+    <div class="main-content">
+        <div class="header">
+            <div class="header-title"></div>
+
+            <div class="user-info-main">
+                @if (Context.Session.GetString("UserName") != null)
+                {
+                    <span>Welcome, @Context.Session.GetString("UserName")</span>
+                    <form asp-action="Logout" asp-controller="Account" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Logout</button>
+                    </form>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Register" class="btn">Sign Up</a>
+                    <a asp-controller="Account" asp-action="Login" class="btn">Login</a>
+                }
+            </div>
+        </div>
+
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - ExamMonitoringWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <script src="~/js/styleJS.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

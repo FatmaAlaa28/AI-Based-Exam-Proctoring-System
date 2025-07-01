@@ -1,0 +1,97 @@
+﻿@using ExamMonitoringWeb.DTO
+@model StudentRegister
+
+@{
+    ViewData["Title"] = "Register";
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/SignUp.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="login-wrap" style=" min-height: 860px;">
+        <div class="login-html">
+            <div class="login-form">
+                <div class="sign-up-htm">
+                    <h2 class="text-center mb-4" style="color: white;">
+                        New Student
+                    </h2>
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <p>@error.ErrorMessage</p>
+                            }
+                        </div>
+                    }
+                    <form asp-controller="Student" asp-action="Create" method="post">
+                        <input name="__RequestVerificationToken"
+                            type="hidden" value="@Html.AntiForgeryToken()" />
+                        <div class="group">
+                            <label asp-for="FullName" class="label">Full Name</label>
+                            <input asp-for="FullName" class="input" required />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="group">
+                            <label asp-for="UserName" class="label">User Name</label>
+                            <input asp-for="UserName" class="input" required />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="group">
+                            <label asp-for="PhoneNumber" class="label">Phone Number</label>
+                            <input asp-for="PhoneNumber" class="input" required />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="group">
+                            <label asp-for="Email" class="label">Email</label>
+                            <input asp-for="Email" class="input" type="email" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="group">
+                            <label asp-for="Department" class="label">Department</label>
+                            <select asp-for="Department" class="input" required>
+                                <option value="">Select a Department</option>
+                                <option value="General">General</option>
+                                <option value="CS">CS</option>
+                                <option value="IS">IS</option>
+                                <option value="IT">IT</option>
+                                <option value="MM">MM</option>
+                                <option value="SE">SE</option>
+                                <option value="AI">AI</option>
+                            </select>
+                            <span asp-validation-for="Department" class="text-danger"></span>
+                        </div>
+                        <div class="group">
+                            <label asp-for="NationalId" class="label">NationalId</label>
+                            <input asp-for="NationalId" class="input" required />
+                            <span asp-validation-for="NationalId" class="text-danger"></span>
+                        </div>
+                        <div class="group">
+                            <button type="submit" class="button">Register</button>
+                        </div>
+                    </form>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+    
+</body>
+</html>

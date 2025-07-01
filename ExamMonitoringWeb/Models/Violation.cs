@@ -6,18 +6,23 @@ namespace ExamMonitoringWeb.Models
     public class Violation
     {
         [Key]
-        public int ViolationId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public string ViolationType { get; set; }
+		public string Direction { get; set; }
 
-        [Required]
+		[Required]
         public DateTime Timestamp { get; set; }
 
-        public string UserId { get; set; }
+
+        public int UserId { get; set; }
         public ApplicationUser User { get; set; }
 
-        public string ExamId { get; set; }
+        public int ExamId { get; set; }
         public Exam Exam { get; set; }
+
+        public int LabId { get; set; }
+        public Lab Lab { get; set; }
     }
 }

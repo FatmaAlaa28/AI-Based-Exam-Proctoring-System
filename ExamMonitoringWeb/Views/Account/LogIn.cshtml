@@ -1,0 +1,155 @@
+﻿@* @using ExamMonitoringWeb.DTO
+@model RegisterAdminModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+	<div class="login-wrap">
+		<div class="login-html">
+			<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+			<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+			<div class="login-form">
+				<div class="sign-in-htm">
+					<form asp-action="LogIn" asp-controller="Account" method="post">
+                    <input name="__RequestVerificationToken" type="hidden" value="@Html.AntiForgeryToken()" />
+					<div class="group">
+						<label asp-for="Email" class="label">Email</label>
+						<input asp-for="Email" class="input" type="email" required />
+						<span asp-validation-for="Email" class="text-danger"></span>
+					</div>
+					<div class="group">
+						<label asp-for="Password" class="label">Password</label>
+						<input asp-for="Password" class="input" type="password" required />
+						<span asp-validation-for="Password" class="text-danger"></span>
+					</div>
+					<div class="group">
+						<input type="submit" class="button" value="Sign In">
+					</div>
+					<div class="hr"></div>
+					<div class="foot-lnk">
+						<a href="#forgot">Forgot Password?</a>
+					</div>
+					</form>
+				</div>
+				<div class="sign-up-htm">
+					<form asp-action="Register" asp-controller="Account" method="post">
+					<div class="group">
+						<label asp-for="FullName" class="label">Full Name</label>
+						<input asp-for="FullName" class="input" required />
+						<span asp-validation-for="FullName" class="text-danger"></span>
+					</div>
+					<div class="group">
+						<label asp-for="UserName" class="label">User Name</label>
+						<input asp-for="UserName" class="input" required />
+						<span asp-validation-for="UserName" class="text-danger"></span>
+					</div>
+					<div class="group">
+						<label asp-for="Email" class="label">Email</label>
+						<input asp-for="Email" class="input" type="email" required />
+						<span asp-validation-for="Email" class="text-danger"></span>
+					</div>
+					<div class="group">
+						<label asp-for="PhoneNumber" class="label">Phone Number</label>
+						<input asp-for="PhoneNumber" class="input" required />
+						<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+					</div>
+					<div class="group">
+						<label asp-for="Role" class="label">Role</label>
+						<select asp-for="Role" class="input" required>
+							<option value="">Select a role</option>
+							<option value="Supervisor">Supervisor</option>
+							<option value="TeachingAssistant">Teaching Assistant</option>
+						</select>
+						<span asp-validation-for="Role" class="text-danger"></span>
+					</div>
+					<div class="group">
+						<label asp-for="Password" class="label">Password</label>
+						<input asp-for="Password" class="input" type="password" required />
+						<span asp-validation-for="Password" class="text-danger"></span>
+					</div>
+					<div class="group">
+						<label asp-for="ConfirmPassword" class="label">Confirm Password</label>
+						<input asp-for="ConfirmPassword" class="input" type="password" required />
+						<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+					</div>
+					
+					<div class="group">
+						<input type="submit" class="button" value="Sign Up">
+					</div>
+					<div class="hr"></div>
+					<div class="foot-lnk">
+						<label for="tab-1">Already Member?</a>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html> *@
+
+
+@model ExamMonitoringWeb.DTO.LogIn
+@{
+	ViewData["Title"] = "Register";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"]</title>
+	<link rel="stylesheet" href="~/css/style.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="login-wrap">
+		<div class="login-html">
+			<div class="login-form">
+				<div class="sign-up-htm">
+					<h2 class="text-center mb-4" style="color: white;">Sign In</h2>
+					@if (!ViewData.ModelState.IsValid)
+					{
+						<div class="alert alert-danger">
+							@foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+							{
+								<p>@error.ErrorMessage</p>
+							}
+						</div>
+					}
+					<form asp-action="LogIn" asp-controller="Account" method="post" >
+						<input name="__RequestVerificationToken" type="hidden" value="@Html.AntiForgeryToken()" />	
+						<div class="group">
+							<label asp-for="Email" class="label">Email</label>
+							<input asp-for="Email"  class="input" type="email" required />
+							<span asp-validation-for="Email" class="text-danger"></span>
+						</div>
+						
+						<div class="group">
+							<label asp-for="Password" class="label">Password</label>
+							<input asp-for="Password"  class="input" type="password" required />
+							<span asp-validation-for="Password" class="text-danger"></span>
+						</div>
+
+						<div class="group">
+							<button type="submit" class="button">Log In</button>
+						</div>
+					</form>
+					<p class="text-center mt-3">
+						New User? <a asp-action="Register"> Sign Up</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
