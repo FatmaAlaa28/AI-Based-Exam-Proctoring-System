@@ -14,11 +14,15 @@ The desktop application, which handles client-side exam monitoring (including vi
 
 # Technology Stack
 
-Backend: .NET (ASP.NET Core for API development)
-Database: SQL Server
-Frontend: (Specify your frontend technology, e.g., Razor Pages, Blazor, or a JavaScript framework like Angular/React)
-AI Integration: Communicates with the desktop application for AI-based proctoring (face recognition, gaze detection, etc.)
-APIs: RESTful APIs for communication between the admin side and the desktop application.
+- Backend: .NET (ASP.NET Core for API development)
+
+- Database: SQL Server
+
+- Frontend: (Razor Pages, JavaScript)
+  
+- AI Integration: Communicates with the desktop application for AI-based proctoring (face recognition, gaze detection, etc.)
+
+- APIs: RESTful APIs for communication between the admin side and the desktop application.
 
 # Prerequisites
 To set up and run the admin side of the project, ensure you have the following installed:
