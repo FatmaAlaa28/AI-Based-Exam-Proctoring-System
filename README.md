@@ -72,6 +72,7 @@ Desktop Repository:([https://github.com/FatmaAlaa28/Exam-Proctoring-Desktop-Appl
 The admin side provides RESTful APIs for communication with the desktop application. Key endpoints include:
 
 1- POST /api/auth/login: Authenticate users and return exam links.
+
 2- POST /api/detection/cheating: Receive cheating detection data from the desktop application.
 
 # Usage
@@ -88,15 +89,15 @@ Contributions are welcome! To contribute:
 
 (2) Create a new branch:
 
-git checkout -b feature/your-feature
+      git checkout -b feature/your-feature
 
 (3) Make your changes and commit:
 
-git commit -m "Add your feature"
+      git commit -m "Add your feature"
 
 (4) Push to the branch:
 
-git push origin feature/your-feature
+      git push origin feature/your-feature
 
 (5) Open a pull request.
 
