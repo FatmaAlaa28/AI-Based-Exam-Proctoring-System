@@ -28,7 +28,9 @@ The desktop application, which handles client-side exam monitoring (including vi
 To set up and run the admin side of the project, ensure you have the following installed:
 
 (1) .NET SDK (version 6.0 or later, depending on the project configuration)
+
 (2) SQL Server (e.g., SQL Server Express 2019 or later)
+
 (3) Visual Studio or another IDE compatible with .NET development
 
 # Installation
@@ -51,11 +53,6 @@ dotnet restore
 - Build and run the project:
 dotnet run
 The application will be accessible at http://localhost:5000 (or the port specified in your configuration).
-
-# Configuration
-appsettings.json: Configure the SQL Server connection string, API endpoints, and other settings.
-Environment Variables: Set up any required environment variables for sensitive data (e.g., API keys, admin credentials).
-CORS Settings: If the desktop application communicates with the admin side, ensure CORS is configured to allow requests from the desktop app's server URL.
 
 # Desktop Application (Student Side)
 The client-side desktop application, which performs real-time exam monitoring using AI, is implemented in Python and is hosted in a separate repository. This application uses:
