@@ -62,18 +62,17 @@ The client-side desktop application, which performs real-time exam monitoring us
 - TensorFlow for machine learning models.
 - PyAudio for audio monitoring.
 
-=> To integrate the desktop application with this admin side:
+To integrate the desktop application with this admin side:
 
-Ensure the desktop application is configured to send cheating detection data to the admin API endpoints (e.g., /api/detection/cheating).
-Update the server URL in the desktop application to point to the admin side's API.
+- Ensure the desktop application is configured to send cheating detection data to the admin API endpoints (e.g., /api/detection/cheating).
+- Update the server URL in the desktop application to point to the admin side's API.
 
 Desktop Repository:([https://github.com/FatmaAlaa28/Exam-Proctoring-Desktop-Application]).
-API Endpoints
+- API Endpoints
 The admin side provides RESTful APIs for communication with the desktop application. Key endpoints include:
 
-POST /api/auth/login: Authenticate users and return exam links.
-POST /api/detection/cheating: Receive cheating detection data from the desktop application.
-(Add other relevant endpoints as implemented in your .NET project)
+1- POST /api/auth/login: Authenticate users and return exam links.
+2- POST /api/detection/cheating: Receive cheating detection data from the desktop application.
 
 # Usage
 
@@ -84,13 +83,18 @@ POST /api/detection/cheating: Receive cheating detection data from the desktop a
 
 # Contributing
 Contributions are welcome! To contribute:
+
 (1) Fork the repository.
+
 (2) Create a new branch:
 git checkout -b feature/your-feature
+
 (3) Make your changes and commit:
 git commit -m "Add your feature"
+
 (4) Push to the branch:
 git push origin feature/your-feature
+
 (5) Open a pull request.
 
 
