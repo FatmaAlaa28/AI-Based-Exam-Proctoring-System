@@ -95,6 +95,6 @@ git push origin feature/your-feature
 
 
 # License
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the [License](/LICENSE) file for details.
 # Contact
-For questions or support, contact Fatma Alaa or open an issue on this repository.
+For questions or support, contact [https://github.com/FatmaAlaa28] or open an issue on this repository.
