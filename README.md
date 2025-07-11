@@ -1,7 +1,7 @@
 ## AI-Based Exam Proctoring System (Admin Side)
 # Overview
 This repository contains the admin side of an AI-Based Exam Proctoring System, designed to manage and monitor online examinations with enhanced security and anti-cheating measures. The admin side is built using .NET for the backend and SQL Server for the database, providing a robust interface for administrators to oversee exam sessions, manage users, and review cheating detection reports.
-The desktop application, which handles client-side exam monitoring (including video, audio, and AI-based detection), is implemented in Python using libraries such as OpenCV, Dlib, and PyQt5. It is hosted in a separate repository (link to be added once available).
+The desktop application, which handles client-side exam monitoring (including video, audio, and AI-based detection), is implemented in Python using libraries such as OpenCV, Dlib, and PyQt5. It is hosted in a separate repository ([https://github.com/FatmaAlaa28/Exam-Proctoring-Desktop-Application]).
 # Features
 
 - Admin Dashboard: User-friendly interface for managing exams, students, and proctoring data.
@@ -67,7 +67,7 @@ The client-side desktop application, which performs real-time exam monitoring us
 Ensure the desktop application is configured to send cheating detection data to the admin API endpoints (e.g., /api/detection/cheating).
 Update the server URL in the desktop application to point to the admin side's API.
 
-Desktop Repository:(https://github.com/FatmaAlaa28/Exam-Proctoring-Desktop-Application).
+Desktop Repository:([https://github.com/FatmaAlaa28/Exam-Proctoring-Desktop-Application]).
 API Endpoints
 The admin side provides RESTful APIs for communication with the desktop application. Key endpoints include:
 
